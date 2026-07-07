@@ -1,0 +1,19 @@
+import { getFirestore, doc, updateDoc, increment } from "https://gstatic.com";
+
+// Is function ko apne Admin Panel ke Approve Button par call karein
+async function approveUserDeposit(requestId, userId, dollarAmount) {
+    const db = getFirestore();
+    try {
+        // 1. User ka balance badhayein
+        await updateDoc(doc(db, 'users', userId), {
+            walletBalance: increment(Number(dollarAmount))
+        });
+        // 2. Request Status approved karein
+        await updateDoc(doc(db, 'depositRequests', requestId), {
+            status: 'approved'
+        });
+        alert(`Successfully approved $${dollarAmount}!`);
+    } catch (e) {
+        alert("Approval failed: " + e.message);
+    }
+}
