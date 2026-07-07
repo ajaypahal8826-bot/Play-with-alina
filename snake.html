@@ -4,56 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Cash Game - Earn USD</title>
-    <!-- Firebase SDK (Compatibility Mode) -->
-    <script src="https://gstatic.com"></script>
-    <script src="https://gstatic.com"></script>
-    <script src="https://gstatic.com"></script>
-
     <style>
-        body {
-            background-color: #0f0f12;
-            color: #ffffff;
-            font-family: 'Segoe UI', sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 20px;
-        }
-        .game-card {
-            background: #1a1a24;
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
-        }
+        body { background-color: #0f0f12; color: #ffffff; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .game-card { background: #1a1a24; max-width: 500px; margin: 0 auto; padding: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 255, 102, 0.2); }
         h1 { color: #00ff66; margin-bottom: 5px; }
-        .balance-badge {
-            background: #252538;
-            padding: 8px 15px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-bottom: 15px;
-            font-weight: bold;
-            color: #ffcc00;
-        }
-        canvas {
-            background: #000;
-            display: block;
-            margin: 15px auto;
-            border: 3px solid #00ff66;
-            border-radius: 8px;
-        }
-        .btn {
-            background: #00ff66;
-            color: #000;
-            border: none;
-            padding: 12px 30px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+        .balance-badge { background: #252538; padding: 8px 15px; border-radius: 20px; display: inline-block; margin-bottom: 15px; font-weight: bold; color: #ffcc00; }
+        canvas { background: #000; display: block; margin: 15px auto; border: 3px solid #00ff66; border-radius: 8px; }
+        .btn { background: #00ff66; color: #000; border: none; padding: 12px 30px; font-size: 16px; font-weight: bold; border-radius: 25px; cursor: pointer; transition: 0.3s; }
         .btn:hover { background: #00cc52; box-shadow: 0 0 15px #00ff66; }
         .btn:disabled { background: #444; color: #888; cursor: not-allowed; box-shadow: none; }
         #score-board { font-size: 20px; margin: 10px 0; color: #00ffff; }
@@ -64,28 +21,28 @@
 <div class="game-card">
     <h1>🐍 Snake USD Game</h1>
     <div class="balance-badge">Your Wallet: $<span id="wallet-val">0.00</span></div>
-    
     <div id="score-board">Score: 0 | Target to Win: 15</div>
-    
     <canvas id="gameCanvas" width="400" height="400"></canvas>
-    
-    <button class="btn" id="start-btn" onclick="payAndStartGame()">Play Game (Entry Fee: $0.20)</button>
+    <button class="btn" id="start-btn">Play Game (Entry Fee: $0.20)</button>
 </div>
 
-<script>
-    // 🔥 APNA FIREBASE CONFIG YAHAN DIJIYE
+<script type="module">
+    import { initializeApp } from "https://gstatic.com";
+    import { getFirestore, doc, onSnapshot, getDoc, updateDoc, addDoc, collection, serverTimestamp, increment } from "https://gstatic.com";
+    import { getAuth, onAuthStateChanged } from "https://gstatic.com";
+
     const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_AUTH_DOMAIN",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_STORAGE_BUCKET",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
+        apiKey: "AIzaSyCjZk8A8tJvUf4YmIkAy-g3_5YqhvW-3Bc",
+        authDomain: "playwithalina-d7bb3.firebaseapp.com",
+        projectId: "playwithalina-d7bb3",
+        storageBucket: "playwithalina-d7bb3.firebasestorage.app",
+        messagingSenderId: "18244211359",
+        appId: "1:18244211359:web:d10be09d3e9fbb184c88aa"
     };
-    
-    if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-    const db = firebase.firestore();
-    const auth = firebase.auth();
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
 
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
@@ -97,43 +54,38 @@
     let gameInterval = null;
     let isGameRunning = false;
 
-    // Wallet Balance Check in Dollars
-    auth.onAuthStateChanged(user => {
+    onAuthStateChanged(auth, user => {
         if (user) {
-            db.collection('users').doc(user.uid).onSnapshot(doc => {
-                if (doc.exists) {
-                    let balance = doc.data().walletBalance || 0;
+            onSnapshot(doc(db, 'users', user.uid), docSnap => {
+                if (docSnap.exists()) {
+                    let balance = docSnap.data().walletBalance || 0;
                     document.getElementById('wallet-val').innerText = balance.toFixed(2);
                 }
             });
+        } else {
+            alert("Please login first!");
         }
     });
 
-    // Pay Fee Logic ($0.20)
+    document.getElementById('start-btn').addEventListener('click', payAndStartGame);
+
     async function payAndStartGame() {
         const user = auth.currentUser;
         if (!user) return alert("Please Login!");
 
-        const userRef = db.collection('users').doc(user.uid);
-        const doc = await userRef.get();
-        const currentBalance = doc.data().walletBalance || 0;
-        const entryFee = 0.20; // $0.20 Dollar
+        const userRef = doc(db, 'users', user.uid);
+        const docSnap = await getDoc(userRef);
+        const currentBalance = docSnap.data().walletBalance || 0;
+        const entryFee = 0.20;
 
         if (currentBalance < entryFee) {
-            alert("Insufficient Funds! Please request admin to deposit dollars.");
+            alert("Insufficient Funds! Please deposit money.");
             return;
         }
 
-        // Deduct Dollar from Firebase
-        await userRef.update({ walletBalance: currentBalance - entryFee });
-        
-        await db.collection('transactions').add({
-            userId: user.uid,
-            type: 'Snake Game Entry',
-            amount: entryFee,
-            currency: 'USD',
-            status: 'success',
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        await updateDoc(userRef, { walletBalance: currentBalance - entryFee });
+        await addDoc(collection(db, 'transactions'), {
+            userId: user.uid, type: 'Snake Game Entry', amount: entryFee, currency: 'USD', status: 'success', timestamp: serverTimestamp()
         });
 
         document.getElementById('start-btn').disabled = true;
@@ -143,8 +95,7 @@
     }
 
     function resetGame() {
-        snake = [{x: 160, y: 160}];
-        dx = grid; dy = 0; score = 0;
+        snake = [{x: 160, y: 160}]; dx = grid; dy = 0; score = 0;
         document.getElementById('score-board').innerText = "Score: 0 | Target: 15";
         generateFood();
     }
@@ -191,29 +142,19 @@
         if (event.keyCode === 40 && dy === 0) { dx = 0; dy = grid; }
     });
 
-    // Reward Logic in Dollars ($0.50 Win)
     async function processGameResult() {
         const user = auth.currentUser;
         const targetScore = 15;
-        const winningPrize = 0.50; // $0.50 Dollar Win
+        const winningPrize = 0.50;
 
         if (score >= targetScore) {
             alert(`🎉 Congratulations! You won $${winningPrize}!`);
-            const userRef = db.collection('users').doc(user.uid);
-            await userRef.update({
-                walletBalance: firebase.firestore.FieldValue.increment(winningPrize)
-            });
-
-            await db.collection('transactions').add({
-                userId: user.uid,
-                type: 'Snake Game Win',
-                amount: winningPrize,
-                currency: 'USD',
-                status: 'success',
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            await updateDoc(doc(db, 'users', user.uid), { walletBalance: increment(winningPrize) });
+            await addDoc(collection(db, 'transactions'), {
+                userId: user.uid, type: 'Snake Game Win', amount: winningPrize, currency: 'USD', status: 'success', timestamp: serverTimestamp()
             });
         } else {
-            alert(`Game Over! Your score: ${score}. Reach 15 to win cash.`);
+            alert(`Game Over! Your score: ${score}. Reach 15 to win.`);
         }
     }
 </script>
