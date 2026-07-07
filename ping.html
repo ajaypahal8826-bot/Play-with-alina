@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pubg Battle Survival</title>
+    <style>
+        body { background: #1a1a1a; color: #fff; font-family: sans-serif; text-align: center; }
+        .battlefield { width: 300px; height: 200px; background: #556b2f; margin: auto; border-radius: 8px; position: relative; overflow: hidden; }
+        .enemy { position: absolute; font-size: 24px; cursor: pointer; top: 50px; left: 120px; }
+    </style>
+</head>
+<body>
+    <a href="games.html" style="color:olive;">← Safe Zone Exit</a>
+    <h1>🪂 PUBG MINI SURVIVAL</h1>
+    <div class="battlefield">
+        <div class="enemy" id="target" onclick="shoot()">🪖</div>
+    </div>
+    <h3 id="score">Score: 0</h3>
+    <script>
+        let s = 0;
+        function shoot() {
+            s++; document.getElementById("score").innerText = "Score: " + s;
+            document.getElementById("target").style.left = Math.floor(Math.random()*240) + "px";
+            document.getElementById("target").style.top = Math.floor(Math.random()*140) + "px";
+        }
+    </script>
+</body>
+</html>
