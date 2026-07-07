@@ -1,1 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truth or Dare - Adult Mode</title>
+    <style>
+        body { background: #0a0512; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
+        .box { background: #1a0f2e; max-width: 360px; margin: 40px auto; padding: 30px; border-radius: 15px; border: 2px solid #e0115f; box-shadow: 0 0 20px #e0115f; }
+        .btn { background: #e0115f; color: #fff; border: none; padding: 12px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; margin: 10px; font-size: 16px; }
+        #text { font-size: 20px; margin: 25px 0; color: #00ffcc; min-height: 60px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <a href="games.html" style="color:#aaa; text-decoration:none;">← Exit Game</a>
+    <div class="box">
+        <h2>💋 TRUTH OR DARE (18+)</h2>
+        <p>Pick your choice for adult party actions:</p>
+        <div id="text">Click Truth or Dare to get a challenge!</div>
+        <button class="btn" style="background:#7f00ff;" onclick="getTruth()">Truth 📝</button>
+        <button class="btn" onclick="getDare()">Dare 🔥</button>
+    </div>
+    <script>
+        const truths = [
+            "Who was your first crush on this platform?",
+            "What is your biggest secret fantasy?",
+            "Have you ever sent a risky text by mistake?",
+            "What do you find most attractive in a player?"
+        ];
+        const dares = [
+            "Send a flirty message to the 1st person on Dating Hub.",
+            "Post a bold status on your profile for 10 minutes.",
+            "Reveal your real contact info to your last match.",
+            "Virtually kiss the person who wins the next 3 Patti round."
+        ];
+        function getTruth() { document.getElementById("text").innerText = truths[Math.floor(Math.random()*truths.length)]; }
+        function getDare() { document.getElementById("text").innerText = dares[Math.floor(Math.random()*dares.length)]; }
+    </script>
+</body>
+</html>
 
