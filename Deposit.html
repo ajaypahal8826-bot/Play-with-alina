@@ -3,54 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Funds - PlayWithAlina International</title>
+    <title>Add Funds - Alina Vegas Pro</title>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cloudflare.com">
     <style>
-        body { background: #0f0f12; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; margin: 0; }
-        .deposit-box { background: #1a1a24; max-width: 480px; margin: 20px auto; padding: 25px; border-radius: 15px; border: 1px solid #ffcc00; box-shadow: 0 0 25px rgba(255, 204, 0, 0.15); }
-        h2 { color: #ffcc00; margin-top: 0; font-size: 24px; }
-        p { color: #aaa; font-size: 14px; }
-        .pay-method { background: #252538; padding: 15px; margin: 15px 0; border-radius: 10px; text-align: left; transition: 0.3s; }
-        .pay-method:hover { background: #2a2a3f; }
-        .pay-btn { background: #0070ba; color: white; padding: 10px 18px; text-decoration: none; border-radius: 25px; font-weight: bold; display: inline-block; margin-top: 8px; font-size: 14px; box-shadow: 0 4px 10px rgba(0, 112, 186, 0.3); }
+        body { 
+            background: radial-gradient(circle at center, #140522 0%, #05010a 100%); 
+            color: #fff; 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        /* Unified Premium Navbar */
+        header {
+            background: rgba(10, 2, 18, 0.95);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            border-bottom: 3px solid #ff0077;
+            box-shadow: 0 0 20px rgba(255, 0, 119, 0.4);
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+            letter-spacing: 1px;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+        }
+        nav a {
+            color: #ddd;
+            text-decoration: none;
+            margin: 0 12px;
+            font-size: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+        nav a:hover { color: #ff0077; text-shadow: 0 0 10px #ff0077; }
+        
+        .deposit-blink {
+            color: #ffcc00 !important;
+            border: 1px solid #ffcc00;
+            padding: 6px 14px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px #ffcc00;
+        }
+        
+        .nav-wallet-status {
+            background: #1c0b30;
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: #00ff66;
+            font-weight: bold;
+            border: 1px solid #00ff66;
+            font-size: 14px;
+        }
+
+        /* Form Container Box */
+        .deposit-box { 
+            background: #0d0217; 
+            max-width: 480px; 
+            margin: 40px auto; 
+            padding: 30px 25px; 
+            border-radius: 15px; 
+            border: 1px solid #ff0077; 
+            box-shadow: 0 0 25px rgba(255, 0, 119, 0.2); 
+        }
+        h2 { color: #ffcc00; margin-top: 0; font-size: 24px; text-shadow: 0 0 10px rgba(255, 204, 0, 0.3); }
+        p { color: #b5b5c3; font-size: 14px; line-height: 1.5; }
+        
+        .pay-method { background: #160726; padding: 15px; margin: 15px 0; border-radius: 10px; text-align: left; border: 1px solid #2d124d; }
+        .pay-btn { background: #0070ba; color: white; padding: 10px 20px; text-decoration: none; border-radius: 25px; font-weight: bold; display: inline-block; margin-top: 8px; font-size: 14px; box-shadow: 0 4px 10px rgba(0, 112, 186, 0.3); border: none; cursor: pointer; }
         .pay-btn:hover { background: #0056b3; }
+        
         .upi-badge { background: #097939; color: white; display: inline-block; padding: 4px 8px; border-radius: 5px; font-weight: bold; font-size: 12px; margin-bottom: 5px; }
         .paypal-badge { background: #00457c; color: white; display: inline-block; padding: 4px 8px; border-radius: 5px; font-weight: bold; font-size: 12px; margin-bottom: 5px; }
-        .input-group { text-align: left; width: 92%; margin: 10px auto; }
-        label { display: block; font-size: 12px; color: #888; margin-bottom: 5px; font-weight: bold; text-transform: uppercase; }
-        input, button { width: 100%; padding: 14px; box-sizing: border-box; border-radius: 8px; border: none; font-size: 16px; }
-        input { background: #111; color: #fff; border: 1px solid #333; transition: 0.3s; }
-        input:focus { border-color: #ffcc00; outline: none; }
-        button { background: #ffcc00; color: #000; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 204, 0, 0.2); margin-top: 15px; }
-        button:hover { background: #e6b800; box-shadow: 0 4px 20px rgba(255, 204, 0, 0.4); }
-        .highlight-text { color: #fff; font-family: monospace; background: #111; padding: 4px 8px; border-radius: 4px; border: 1px dashed #555; }
+        
+        .input-group { text-align: left; width: 100%; margin: 15px 0; }
+        label { display: block; font-size: 12px; color: #aaa; margin-bottom: 6px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; }
+        input { width: 100%; padding: 14px; box-sizing: border-box; border-radius: 8px; border: 1px solid #ff0077; background: #05010a; color: #fff; font-size: 16px; transition: 0.3s; }
+        input:focus { box-shadow: 0 0 10px #ff0077; outline: none; }
+        
+        #submit-req-btn { 
+            width: 100%; 
+            padding: 14px; 
+            border-radius: 8px; 
+            border: none; 
+            font-size: 16px; 
+            background: linear-gradient(90deg, #ff0077, #ff5500); 
+            color: #fff; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            box-shadow: 0 4px 15px rgba(255, 0, 119, 0.3); 
+            margin-top: 10px; 
+        }
+        #submit-req-btn:hover { opacity: 0.9; box-shadow: 0 4px 20px rgba(255, 0, 119, 0.5); }
+        .highlight-text { color: #00ffff; font-family: monospace; background: #05010a; padding: 4px 8px; border-radius: 4px; border: 1px solid #2d124d; }
     </style>
 </head>
 <body>
+
+<header>
+    <div class="logo">🎰 ALINA VEGAS</div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="games.html">Games</a>
+        <a href="Deposit.html" class="deposit-blink">Add Funds</a>
+        <a href="Adminaprooval.html">Owner Panel</a>
+    </nav>
+    <div class="nav-wallet-status"><i class="fa-solid fa-wallet"></i> Wallet: <span id="nav-wallet-display">$0.00</span></div>
+</header>
 
 <div class="deposit-box">
     <h2>💰 Add USD to Wallet</h2>
     <p>Choose your payment method below. Send the USD amount, copy the transaction details, and submit the proof below for instant manual approval.</p>
 
-    <!-- 1. PayPal Payment Method (Using Merchant ID Link) -->
+    <!-- 1. PayPal Payment Method -->
     <div class="pay-method" style="border-left: 5px solid #0070ba;">
-        <span class="paypal-badge">🅿️ PayPal (Global Users)</span>
+        <span class="paypal-badge"><i class="fa-brands fa-paypal"></i> PayPal (Global Users)</span>
         <p style="margin: 8px 0 4px 0;">Merchant ID: <span class="highlight-text">EKA6Z3BFR6G7Q</span></p>
-        <p style="margin: 5px 0; font-size: 12px;">Click below to open PayPal send panel directly to our business account.</p>
-        <!-- Dynamic link that uses your exact Merchant ID -->
+        <p style="margin: 5px 0; font-size: 12px; color: #b5b5c3;">Click below to open PayPal panel directly to send funds.</p>
         <a href="https://paypal.com" target="_blank" class="pay-btn">Pay via PayPal</a>
     </div>
 
-    <!-- 2. UPI Payment Method for Indian Users -->
+    <!-- 2. UPI Payment Method -->
     <div class="pay-method" style="border-left: 5px solid #097939;">
-        <span class="upi-badge">🇮🇳 UPI (Indian Users Only)</span>
+        <span class="upi-badge"><i class="fa-solid fa-building-columns"></i> UPI (Indian Users Only)</span>
         <p style="margin: 8px 0 4px 0;">UPI ID: <span class="highlight-text">niteshkakran84-1@okaxis</span></p>
-        <p style="margin: 5px 0; font-size: 12px; color: #ffcc00;">💡 NOTE: Double check current USD to INR exchange rate before sending equivalent Rupees via UPI.</p>
+        <p style="margin: 5px 0; font-size: 12px; color: #ffcc00;">💡 NOTE: Convert USD to INR exchange rate before sending via UPI.</p>
     </div>
 
     <hr style="border: 0; border-top: 1px dashed #333; margin: 25px 0;">
 
-    <!-- 3. Form to Submit Proof to Admin -->
-    <h3 style="margin-bottom: 15px; font-size: 18px; color: #ffcc00;">📥 Submit Payment Proof</h3>
+    <h3 style="margin-bottom: 15px; font-size: 18px; color: #ffcc00; text-align: left;"><i class="fa-solid fa-receipt"></i> Submit Payment Proof</h3>
     
     <div class="input-group">
         <label for="deposit-amount">Amount Sent (In USD $)</label>
@@ -58,24 +150,21 @@
     </div>
 
     <div class="input-group">
-        <label for="tx-id">Transaction ID / Reference Reference No.</label>
+        <label for="tx-id">Transaction ID / Reference No.</label>
         <input type="text" id="tx-id" placeholder="Paste your receipt ref code here">
     </div>
     
-    <div class="input-group">
-        <button id="submit-req-btn">Submit Request to Admin</button>
-    </div>
+    <button id="submit-req-btn">Submit Request to Admin</button>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://gstatic.com";
-    import { getFirestore, addDoc, collection, serverTimestamp } from "https://gstatic.com";
-    import { getAuth } from "https://gstatic.com";
+    import { getFirestore, addDoc, collection, serverTimestamp, doc, onSnapshot } from "https://gstatic.com";
+    import { getAuth, onAuthStateChanged } from "https://gstatic.com";
 
-    // Real Firebase Configuration Linked to your project 'playwithalina-d7bb3'
     const firebaseConfig = {
         apiKey: "AIzaSyCjZk8A8tJvUf4YmIkAy-g3_5YqhvW-3Bc",
-        authDomain: "://firebaseapp.com",
+        authDomain: "playwithalina-d7bb3.firebaseapp.com",
         projectId: "playwithalina-d7bb3",
         storageBucket: "playwithalina-d7bb3.firebasestorage.app",
         messagingSenderId: "18244211359",
@@ -86,9 +175,21 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
 
+    // Live update navbar balance
+    onAuthStateChanged(auth, user => {
+        if (user) {
+            onSnapshot(doc(db, 'users', user.uid), docSnap => {
+                if (docSnap.exists()) {
+                    let balance = docSnap.data().walletBalance || 0;
+                    document.getElementById('nav-wallet-display').innerText = '$' + balance.toFixed(2);
+                }
+            });
+        }
+    });
+
     document.getElementById('submit-req-btn').addEventListener('click', async () => {
         const user = auth.currentUser;
-        if (!user) return alert("Please Login into your account first!");
+        if (!user) return alert("⚠️ Syncing account... If you aren't logged in, please open login.html first.");
 
         const amount = document.getElementById('deposit-amount').value;
         const txId = document.getElementById('tx-id').value;
@@ -96,7 +197,6 @@
         if (!amount || !txId) return alert("Please enter both the Amount and Transaction ID!");
 
         try {
-            // Adding dynamic payload object inside Firestore collection
             await addDoc(collection(db, 'depositRequests'), {
                 userId: user.uid,
                 username: user.email || user.uid,
@@ -107,11 +207,10 @@
                 timestamp: serverTimestamp()
             });
 
-            alert("🎉 Payment request successfully sent! Admin will check your transaction on PayPal/UPI and add balance shortly.");
+            alert("🎉 Payment request successfully sent! Admin will check your transaction and approve balance shortly.");
             document.getElementById('deposit-amount').value = '';
             document.getElementById('tx-id').value = '';
         } catch (error) {
-            console.error("Error adding document: ", error);
             alert("Failed to submit request: " + error.message);
         }
     });
