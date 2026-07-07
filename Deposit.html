@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Funds - PlayWithAlina International</title>
+    <style>
+        body { background: #0f0f12; color: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; margin: 0; }
+        .deposit-box { background: #1a1a24; max-width: 480px; margin: 20px auto; padding: 25px; border-radius: 15px; border: 1px solid #ffcc00; box-shadow: 0 0 25px rgba(255, 204, 0, 0.15); }
+        h2 { color: #ffcc00; margin-top: 0; font-size: 24px; }
+        p { color: #aaa; font-size: 14px; }
+        .pay-method { background: #252538; padding: 15px; margin: 15px 0; border-radius: 10px; text-align: left; transition: 0.3s; }
+        .pay-method:hover { background: #2a2a3f; }
+        .pay-btn { background: #0070ba; color: white; padding: 10px 18px; text-decoration: none; border-radius: 25px; font-weight: bold; display: inline-block; margin-top: 8px; font-size: 14px; box-shadow: 0 4px 10px rgba(0, 112, 186, 0.3); }
+        .pay-btn:hover { background: #0056b3; }
+        .upi-badge { background: #097939; color: white; display: inline-block; padding: 4px 8px; border-radius: 5px; font-weight: bold; font-size: 12px; margin-bottom: 5px; }
+        .paypal-badge { background: #00457c; color: white; display: inline-block; padding: 4px 8px; border-radius: 5px; font-weight: bold; font-size: 12px; margin-bottom: 5px; }
+        .input-group { text-align: left; width: 92%; margin: 10px auto; }
+        label { display: block; font-size: 12px; color: #888; margin-bottom: 5px; font-weight: bold; text-transform: uppercase; }
+        input, button { width: 100%; padding: 14px; box-sizing: border-box; border-radius: 8px; border: none; font-size: 16px; }
+        input { background: #111; color: #fff; border: 1px solid #333; transition: 0.3s; }
+        input:focus { border-color: #ffcc00; outline: none; }
+        button { background: #ffcc00; color: #000; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 204, 0, 0.2); margin-top: 15px; }
+        button:hover { background: #e6b800; box-shadow: 0 4px 20px rgba(255, 204, 0, 0.4); }
+        .highlight-text { color: #fff; font-family: monospace; background: #111; padding: 4px 8px; border-radius: 4px; border: 1px dashed #555; }
+    </style>
+</head>
+<body>
+
+<div class="deposit-box">
+    <h2>💰 Add USD to Wallet</h2>
+    <p>Choose your payment method below. Send the USD amount, copy the transaction details, and submit the proof below for instant manual approval.</p>
+
+    <!-- 1. PayPal Payment Method (Using Merchant ID Link) -->
+    <div class="pay-method" style="border-left: 5px solid #0070ba;">
+        <span class="paypal-badge">🅿️ PayPal (Global Users)</span>
+        <p style="margin: 8px 0 4px 0;">Merchant ID: <span class="highlight-text">EKA6Z3BFR6G7Q</span></p>
+        <p style="margin: 5px 0; font-size: 12px;">Click below to open PayPal send panel directly to our business account.</p>
+        <!-- Dynamic link that uses your exact Merchant ID -->
+        <a href="https://paypal.com" target="_blank" class="pay-btn">Pay via PayPal</a>
+    </div>
+
+    <!-- 2. UPI Payment Method for Indian Users -->
+    <div class="pay-method" style="border-left: 5px solid #097939;">
+        <span class="upi-badge">🇮🇳 UPI (Indian Users Only)</span>
+        <p style="margin: 8px 0 4px 0;">UPI ID: <span class="highlight-text">niteshkakran84-1@okaxis</span></p>
+        <p style="margin: 5px 0; font-size: 12px; color: #ffcc00;">💡 NOTE: Double check current USD to INR exchange rate before sending equivalent Rupees via UPI.</p>
+    </div>
+
+    <hr style="border: 0; border-top: 1px dashed #333; margin: 25px 0;">
+
+    <!-- 3. Form to Submit Proof to Admin -->
+    <h3 style="margin-bottom: 15px; font-size: 18px; color: #ffcc00;">📥 Submit Payment Proof</h3>
+    
+    <div class="input-group">
+        <label for="deposit-amount">Amount Sent (In USD $)</label>
+        <input type="number" id="deposit-amount" placeholder="e.g. 10.00" min="0.1" step="0.01">
+    </div>
+
+    <div class="input-group">
+        <label for="tx-id">Transaction ID / Reference Reference No.</label>
+        <input type="text" id="tx-id" placeholder="Paste your receipt ref code here">
+    </div>
+    
+    <div class="input-group">
+        <button id="submit-req-btn">Submit Request to Admin</button>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://gstatic.com";
+    import { getFirestore, addDoc, collection, serverTimestamp } from "https://gstatic.com";
+    import { getAuth } from "https://gstatic.com";
+
+    // Real Firebase Configuration Linked to your project 'playwithalina-d7bb3'
+    const firebaseConfig = {
+        apiKey: "AIzaSyCjZk8A8tJvUf4YmIkAy-g3_5YqhvW-3Bc",
+        authDomain: "://firebaseapp.com",
+        projectId: "playwithalina-d7bb3",
+        storageBucket: "playwithalina-d7bb3.firebasestorage.app",
+        messagingSenderId: "18244211359",
+        appId: "1:18244211359:web:d10be09d3e9fbb184c88aa"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    document.getElementById('submit-req-btn').addEventListener('click', async () => {
+        const user = auth.currentUser;
+        if (!user) return alert("Please Login into your account first!");
+
+        const amount = document.getElementById('deposit-amount').value;
+        const txId = document.getElementById('tx-id').value;
+
+        if (!amount || !txId) return alert("Please enter both the Amount and Transaction ID!");
+
+        try {
+            // Adding dynamic payload object inside Firestore collection
+            await addDoc(collection(db, 'depositRequests'), {
+                userId: user.uid,
+                username: user.email || user.uid,
+                amountRequested: Number(amount),
+                transactionId: txId,
+                currency: 'USD',
+                status: 'pending',
+                timestamp: serverTimestamp()
+            });
+
+            alert("🎉 Payment request successfully sent! Admin will check your transaction on PayPal/UPI and add balance shortly.");
+            document.getElementById('deposit-amount').value = '';
+            document.getElementById('tx-id').value = '';
+        } catch (error) {
+            console.error("Error adding document: ", error);
+            alert("Failed to submit request: " + error.message);
+        }
+    });
+</script>
+</body>
+</html>
