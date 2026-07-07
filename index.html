@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alina Vegas Pro - Premium Live Platform</title>
-<!-- FontAwesome for icons -->
+<title>Alina Vegas Pro - Live Premium Casino</title>
+<!-- FontAwesome for Premium Icons -->
 <link rel="stylesheet" href="https://cloudflare.com">
 <style>
     body {
@@ -14,14 +14,15 @@
         margin: 0;
         padding: 0;
     }
-    /* Unified Premium Navbar */
+    
+    /* Premium Neon Navbar Layout */
     header {
         background: rgba(10, 2, 18, 0.95);
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 15px 30px;
-        border-bottom: 2px solid #ff0077;
+        border-bottom: 3px solid #ff0077;
         box-shadow: 0 0 20px rgba(255, 0, 119, 0.4);
     }
     .logo {
@@ -46,6 +47,19 @@
     }
     nav a:hover { color: #ff0077; text-shadow: 0 0 10px #ff0077; }
     
+    /* Login/Signup Visual Buttons */
+    .auth-btn {
+        background: #1c0b30;
+        border: 1px solid #ff0077;
+        padding: 6px 14px;
+        border-radius: 4px;
+        color: #fff !important;
+    }
+    .auth-btn:hover {
+        background: #ff0077;
+        box-shadow: 0 0 10px #ff0077;
+    }
+
     .deposit-blink {
         color: #ffcc00 !important;
         border: 1px solid #ffcc00;
@@ -55,7 +69,6 @@
     }
     @keyframes neonBlink { 0% { opacity: 0.8; } 100% { opacity: 1; box-shadow: 0 0 10px #ffcc00; } }
     
-    /* Fixed Wallet Display to "Wallet Balance" */
     .nav-wallet-status {
         background: #1c0b30;
         padding: 8px 16px;
@@ -64,13 +77,13 @@
         font-weight: bold;
         border: 1px solid #00ff66;
         font-size: 14px;
+        margin-left: 10px;
     }
     
     .hero { text-align: center; padding: 50px 20px; background-color: rgba(12, 2, 23, 0.8); }
     .hero h1 { font-size: 48px; color: #ff0077; text-shadow: 0 0 15px #ff0077; margin: 0 0 10px 0; }
     .hero p { color: #aaa; margin: 0; font-size: 16px; }
     
-    /* Casino Grid matching exact global style */
     .casino-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; max-width: 1200px; margin: 40px auto; padding: 0 20px; }
     
     .casino-card { 
@@ -125,7 +138,8 @@
         <a href="index.html">Home</a>
         <a href="games.html">Games</a>
         <a href="Deposit.html" class="deposit-blink">Add Funds</a>
-        <a href="Adminaprooval.html">Owner Panel</a>
+        <a href="login.html" class="auth-btn">Login</a>
+        <a href="signup.html" class="auth-btn">Sign Up</a>
     </nav>
     <div class="nav-wallet-status"><i class="fa-solid fa-wallet"></i> Wallet: <span id="nav-wallet-display">$0.00</span></div>
 </header>
@@ -136,7 +150,6 @@
 </section>
 
 <section class="casino-grid">
-    <!-- Fixed Dating Pool Card Entry -->
     <div class="casino-card dating-card">
         <div style="font-size: 36px; color: #00ffff;"><i class="fa-solid fa-heart-pulse"></i></div>
         <h2>💖 Alina's Dating Pool</h2>
@@ -144,7 +157,6 @@
         <button id="join-pool-btn" class="btn-bet btn-dating">Join Pool (Free)</button>
     </div>
 
-    <!-- Snake Game Redirect Link Fixed -->
     <div class="casino-card">
         <div style="font-size: 36px; color: #ffcc00;"><i class="fa-solid fa-staff-snake"></i></div>
         <h2>🐍 Snake Arena Pro</h2>
@@ -153,17 +165,17 @@
     </div>
 
     <div class="casino-card">
-        <div style="font-size: 36px; color: #ffcc00;"><i class="fa-solid fa-crown"></i></div>
-        <h2>👑 Live Teen Patti</h2>
-        <p>Classic strategy card table. Challenge dealers and users instantly.</p>
-        <a href="games.html" class="btn-bet">Join Match (Entry: $0.20)</a>
+        <div style="font-size: 36px; color: #ffcc00;"><i class="fa-solid fa-hand-fist"></i></div>
+        <h2>✊ Rock Paper Scissors</h2>
+        <p>Classic tactical match. Bet your chips and smash the bot moves.</p>
+        <a href="RPS.html" class="btn-bet">Play RPS (Entry: $0.10)</a>
     </div>
     
     <div class="casino-card">
-        <div style="font-size: 36px; color: #ffcc00;"><i class="fa-solid fa-circle-dot"></i></div>
-        <h2>🔴 Vegas Roulette Wheel</h2>
-        <p>High stakes spinning system. Predict correct table zones.</p>
-        <a href="games.html" class="btn-bet">Spin Board (Entry: $0.20)</a>
+        <div style="font-size: 36px; color: #ffcc00;"><i class="fa-solid fa-table-cells"></i></div>
+        <h2>🔴 Tic Tac Toe Arena</h2>
+        <p>High stakes spinning pattern dashboard. Block coordinates to win.</p>
+        <a href="tictactoe.html" class="btn-bet">Start Match</a>
     </div>
 </section>
 
@@ -209,10 +221,10 @@
         }
     });
 
-    // Fixed handling if user clicks before being fully logged in
     document.getElementById('join-pool-btn').addEventListener('click', async () => {
         if (!currentUserId) {
-            alert("⚠️ Syncing account... If you aren't logged in, please open login.html first.");
+            alert("⚠️ Pehle account create ya login karein! Upar diye gaye buttons par click karein.");
+            window.location.href = "login.html";
             return;
         }
 
