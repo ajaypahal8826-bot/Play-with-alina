@@ -1,86 +1,144 @@
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
+/* Alina Vegas Pro - Unified Premium Design Tokens */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-body{
-background:#0b1220;
-color:white;
+body {
+    background: radial-gradient(circle at center, #140522 0%, #05010a 100%);
+    color: #ffffff;
+    min-height: 100vh;
 }
 
-header{
-background:#111827;
-padding:18px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-position:sticky;
-top:0;
+/* Premium Floating Header Pattern */
+header {
+    background: rgba(10, 2, 18, 0.95);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 3px solid #ff0077;
+    box-shadow: 0 0 20px rgba(255, 0, 119, 0.4);
 }
 
-.logo{
-font-size:28px;
-font-weight:bold;
-color:#00ffd5;
+.logo {
+    font-size: 24px;
+    font-weight: 900;
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff;
+    letter-spacing: 1px;
 }
 
-nav a{
-color:white;
-text-decoration:none;
-margin-left:20px;
-font-size:18px;
+nav a {
+    color: #ddd;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
 }
 
-.hero{
-padding:80px 20px;
-text-align:center;
+nav a:hover {
+    color: #ff0077;
+    text-shadow: 0 0 10px #ff0077;
 }
 
-.hero h1{
-font-size:50px;
-margin-bottom:20px;
+/* Hero Showcase Configuration */
+.hero {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: rgba(12, 2, 23, 0.6);
 }
 
-.hero p{
-font-size:22px;
-color:#ccc;
+.hero h1 {
+    font-size: 48px;
+    color: #ff0077;
+    text-shadow: 0 0 15px #ff0077;
+    margin-bottom: 10px;
+    font-weight: 800;
 }
 
-.btn{
-display:inline-block;
-margin-top:30px;
-padding:15px 35px;
-background:#00ffd5;
-color:black;
-font-weight:bold;
-border-radius:8px;
-text-decoration:none;
+.hero p {
+    font-size: 18px;
+    color: #b5b5c3;
+    letter-spacing: 0.5px;
 }
 
-.games{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-padding:40px;
+/* Interactive CTA Callout Buttons */
+.btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 35px;
+    background: linear-gradient(90deg, #ff0077, #ff5500);
+    color: white;
+    font-weight: bold;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 15px;
+    box-shadow: 0 4px 15px rgba(255, 0, 119, 0.3);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
 }
 
-.game-card{
-background:#1f2937;
-padding:20px;
-border-radius:12px;
-text-align:center;
-transition:.3s;
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(255, 0, 119, 0.5);
+    opacity: 0.95;
 }
 
-.game-card:hover{
-transform:scale(1.05);
+/* Casino Responsive Boards Grid layout */
+.games {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
 }
 
-footer{
-background:#111827;
-padding:20px;
-text-align:center;
-margin-top:40px;
+.game-card {
+    background: #0d0217;
+    border: 1px solid #ff0077;
+    padding: 25px 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+    transition: all 0.3s ease;
+}
+
+.game-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 15px rgba(255, 0, 119, 0.5);
+}
+
+.game-card h2 {
+    color: #ffcc00;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.game-card p {
+    color: #b5b5c3;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Standardized Sticky Footer Bounds */
+footer {
+    background: #05010a;
+    padding: 20px;
+    text-align: center;
+    margin-top: 40px;
+    border-top: 1px solid #1a0b30;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
 }
