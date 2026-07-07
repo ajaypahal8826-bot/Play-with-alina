@@ -15,23 +15,21 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-signInAnonymously(auth).then(() => { loadWallet(); }).catch(() => { forceShowUI(); });
+signInAnonymously(auth).then(() => { syncSystem(); }).catch(() => { fallbackUI(); });
 
-async function loadWallet() {
-  const balanceElement = document.getElementById("wallet-balance");
+async function syncSystem() {
+  const balEl = document.getElementById("wallet-balance");
   try {
-    const docSnap = await getDoc(doc(db, "Alinapro8826", "tek40Ts2fW291tK5AcjG"));
-    if (docSnap.exists()) {
-      if (balanceElement) balanceElement.innerText = "₹" + (docSnap.data().balance || 0);
-    } else {
-      if (balanceElement) balanceElement.innerText = "₹0";
+    const snap = await getDoc(doc(db, "Alinapro8826", "tek40Ts2fW291tK5AcjG"));
+    if (snap.exists() && balEl) {
+      balEl.innerText = "₹" + (snap.data().balance || 100);
+    } else if (balEl) {
+      balEl.innerText = "₹100";
     }
-  } catch (e) {
-    forceShowUI();
-  }
+  } catch (e) { fallbackUI(); }
 }
 
-function forceShowUI() {
-  const balanceElement = document.getElementById("wallet-balance");
-  if (balanceElement) balanceElement.innerText = "₹10"; // Default Balance fallback
+function fallbackUI() {
+  const balEl = document.getElementById("wallet-balance");
+  if (balEl) balEl.innerText = "₹100"; // Instantly removes loading text
 }
