@@ -1,19 +1,100 @@
-import { getFirestore, doc, updateDoc, increment } from "https://gstatic.com";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Admin Dashboard - Alina Vegas</title>
+    <style>
+        body { background: #0b0b0e; color: #fff; font-family: sans-serif; padding: 20px; }
+        .admin-box { max-width: 900px; margin: 0 auto; background: #14141c; padding: 25px; border-radius: 12px; border: 2px solid #ff0077; }
+        h1 { color: #ff0077; text-shadow: 0 0 10px #ff0077; }
+        .request-table { width: 100%; border-collapse: collapse; margin-top: 20px; text-align: left; }
+        .request-table th, .request-table td { padding: 12px; border-bottom: 1px solid #252533; }
+        .request-table th { background: #1c1c28; color: #aaa; }
+        .btn-approve { background: #00ff66; color: #000; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        .status-badge { background: #ffcc00; color: #000; padding: 4px 8px; border-radius: 4px; font-weight: bold; }
+        .no-data { text-align: center; color: #666; padding: 30px; }
+    </style>
+</head>
+<body>
 
-// Is function ko apne Admin Panel ke Approve Button par call karein
-async function approveUserDeposit(requestId, userId, dollarAmount) {
-    const db = getFirestore();
-    try {
-        // 1. User ka balance badhayein
-        await updateDoc(doc(db, 'users', userId), {
-            walletBalance: increment(Number(dollarAmount))
+<div class="admin-box">
+    <h1>👑 Real-Time Deposit Approval Panel (Owner Only)</h1>
+    <table class="request-table">
+        <thead>
+            <tr>
+                <th>User Email</th>
+                <th>Amount</th>
+                <th>Transaction ID</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="requests-list">
+            <tr><td colspan="5" class="no-data">Loading dynamic pending requests...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://gstatic.com";
+    import { getFirestore, collection, query, where, onSnapshot, doc, updateDoc, increment } from "https://gstatic.com";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCjZk8A8tJvUf4YmIkAy-g3_5YqhvW-3Bc",
+        authDomain: "://firebaseapp.com",
+        projectId: "playwithalina-d7bb3",
+        storageBucket: "playwithalina-d7bb3.firebasestorage.app",
+        messagingSenderId: "18244211359",
+        appId: "1:18244211359:web:d10be09d3e9fbb184c88aa"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const q = query(collection(db, 'depositRequests'), where('status', '==', 'pending'));
+    
+    onSnapshot(q, (snapshot) => {
+        const tbody = document.getElementById('requests-list');
+        tbody.innerHTML = '';
+
+        if (snapshot.empty) {
+            tbody.innerHTML = `<tr><td colspan="5" class="no-data">🎉 No pending requests! All clear.</td></tr>`;
+            return;
+        }
+
+        snapshot.forEach((documentSnapshot) => {
+            const data = documentSnapshot.data();
+            const id = documentSnapshot.id;
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><strong>${data.username || 'Unknown'}</strong></td>
+                <td style="color: #00ff66; font-weight: bold;">$${Number(data.amountRequested).toFixed(2)}</td>
+                <td style="color: #00ffff;">${data.transactionId}</td>
+                <td><span class="status-badge">${data.status}</span></td>
+                <td><button class="btn-approve" data-id="${id}" data-user="${data.userId}" data-amount="${data.amountRequested}">Approve</button></td>
+            `;
+            tbody.appendChild(row);
         });
-        // 2. Request Status approved karein
-        await updateDoc(doc(db, 'depositRequests', requestId), {
-            status: 'approved'
+
+        document.querySelectorAll('.btn-approve').forEach(button => {
+            button.addEventListener('click', (e) => {
+                approveUserDeposit(e.target.getAttribute('data-id'), e.target.getAttribute('data-user'), e.target.getAttribute('data-amount'));
+            });
         });
-        alert(`Successfully approved $${dollarAmount}!`);
-    } catch (e) {
-        alert("Approval failed: " + e.message);
+    });
+
+    async function approveUserDeposit(requestId, userId, dollarAmount) {
+        if(!confirm(`Approve $${dollarAmount}?`)) return;
+        try {
+            await updateDoc(doc(db, 'users', userId), { walletBalance: increment(Number(dollarAmount)) });
+            await updateDoc(doc(db, 'depositRequests', requestId), { status: 'approved' });
+            alert(`✅ Success: $${dollarAmount} credited!`);
+        } catch (error) {
+            alert("Error: " + error.message);
+        }
     }
-}
+</script>
+</body>
+</html>
