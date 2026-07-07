@@ -6,7 +6,6 @@
 <title>Alina Vegas Pro - Live Premium Casino</title>
 <!-- FontAwesome for icons -->
 <link rel="stylesheet" href="https://cloudflare.com">
-<link rel="stylesheet" href="style.css">
 <style>
     body {
         background: radial-gradient(circle at center, #1a0826 0%, #090210 100%);
@@ -103,7 +102,7 @@
         <a href="index.html">Lobby</a>
         <a href="games.html">🎰 Mega Slots</a>
         <a href="Deposit.html" class="deposit-blink">💰 Buy Chips</a>
-        <a href="admin.html">Control Room</a>
+        <a href="Adminaprooval.html">Control Room</a>
     </nav>
     <div class="nav-wallet-status">💰 chips: <span id="nav-wallet-display">$0.00</span></div>
 </header>
@@ -117,8 +116,8 @@
     <!-- Premium Dating Pool Feature Card -->
     <div class="casino-card dating-card">
         <div style="font-size: 40px; color: #00ffff;"><i class="fa-solid fa-heart-pulse"></i></div>
-        <h2>💞 Alina's Dating Pool</h2>
-        <p>Meet hot players online! Add yourself to the global matchmaking list and find your match.</p>
+        <h2>💖 Alina's Dating Pool</h2>
+        <p>Meet players online! Add yourself to the global matchmaking list and find your match.</p>
         <button id="join-pool-btn" class="btn-bet btn-dating">Join Pool (Free)</button>
     </div>
 
@@ -152,14 +151,13 @@
 </section>
 
 <script type="module">
-    // Fixed relative static broken URLs to valid Firestore modules
     import { initializeApp } from "https://gstatic.com";
     import { getFirestore, doc, onSnapshot, updateDoc } from "https://gstatic.com";
     import { getAuth, onAuthStateChanged } from "https://gstatic.com";
 
     const firebaseConfig = {
         apiKey: "AIzaSyCjZk8A8tJvUf4YmIkAy-g3_5YqhvW-3Bc",
-        authDomain: "playwithalina-d7bb3.firebaseapp.com",
+        authDomain: "://firebaseapp.com",
         projectId: "playwithalina-d7bb3",
         storageBucket: "playwithalina-d7bb3.firebasestorage.app",
         messagingSenderId: "18244211359",
@@ -176,16 +174,13 @@
         if (user) {
             currentUserId = user.uid;
             
-            // Listen to User Wallet and Dating Pool status
             onSnapshot(doc(db, 'users', user.uid), docSnap => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     
-                    // Update Balance
                     let balance = data.walletBalance || 0;
                     document.getElementById('nav-wallet-display').innerText = '$' + balance.toFixed(2);
                     
-                    // Update Dating Button State dynamically
                     const poolBtn = document.getElementById('join-pool-btn');
                     if(data.isInDatingPool === true) {
                         poolBtn.innerText = "Leave Dating Pool";
@@ -196,12 +191,9 @@
                     }
                 }
             });
-        } else {
-            console.log("No user signed in.");
         }
     });
 
-    // Handle Join/Leave Dating Pool action
     document.getElementById('join-pool-btn').addEventListener('click', async () => {
         if (!currentUserId) {
             alert("Please log in first to join the dating pool!");
