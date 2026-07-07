@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vegas Premium Library</title>
+    <style>
+        body { background: #120e1a; color: #f1f1f1; font-family: 'Georgia', serif; padding: 20px; }
+        .book-card { background: #1d172b; max-width: 500px; margin: 20px auto; padding: 25px; border-radius: 12px; border-left: 5px solid #ff007f; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .blur-text { filter: blur(5px); user-select: none; opacity: 0.3; margin-top: 10px; }
+        .pay-box { background: rgba(255, 0, 127, 0.1); border: 1px solid #ff007f; padding: 15px; border-radius: 8px; text-align: center; margin-top: 15px; }
+        .btn { background: #ff007f; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; font-size: 14px; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <a href="games.html" style="color:#aaa; text-decoration:none; font-family:sans-serif;">← Exit Library</a>
+    <h1 style="text-align:center; color:#ff007f; font-family:sans-serif;">📚 ADULT NOVEL & STORIES</h1>
+    
+    <!-- Novel Book 1 -->
+    <div class="book-card">
+        <h2 style="color:#00ffcc; margin-top:0;">1. Midnight Desires in Vegas</h2>
+        <p style="font-style: italic; color:#bbb;">Author: Secret Romance Elite</p>
+        <p><strong>Chapter 1: The First Encounter</strong></p>
+        <p>It was 2 AM when Alina entered the neon-lit premium casino lounge. The music was vibrating, but her eyes locked instantly onto a mysterious player sitting across the high-stakes roulette table...</p>
+        
+        <div id="premium-content-1">
+            <div class="blur-text">
+                They shared a silent look of confidence. He raised his glass, betting all his remaining coins on her favorite lucky number. As the casino wheel started slowing down, the tension between them became hot and electric...
+            </div>
+            <div class="pay-box">
+                <p style="color:#ff007f; font-weight:bold; margin-top:0;">🔒 REST OF THE STORY IS LOCKED</p>
+                <p style="font-size:13px; margin:5px 0 15px 0;">Spend ₹20 from your wallet balance to read the full romantic chapter.</p>
+                <button class="btn" onclick="unlockStory(1)">Unlock Chapter (Pay ₹20)</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function unlockStory(id) {
+            // Asli framework payment alert logic
+            alert("Processing request... Wallet API is communicating with Firebase.");
+            document.getElementById("premium-content-" + id).innerHTML = `
+                <p style="color:#00ffcc; font-weight:bold;">🔓 CHAPTER UNLOCKED SUCCESSFULLY!</p>
+                <p>They shared a silent look of confidence. He raised his glass, betting all his remaining coins on her favorite lucky number. As the casino wheel started slowing down, the tension between them became hot and electric...</p>
+                <p>He leaned closer, whispering that wins and losses didn't matter tonight, as long as they played the games together until the Vegas sun came up.</p>
+            `;
+        }
+    </script>
+</body>
+</html>
