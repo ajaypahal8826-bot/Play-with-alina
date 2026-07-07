@@ -3,28 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess Master Arena</title>
+    <title>Pro Playable Chess</title>
     <style>
-        body { background: #222; color: #fff; font-family: sans-serif; text-align: center; }
-        .board { display: grid; grid-template-columns: repeat(8, 40px); grid-template-rows: repeat(8, 40px); justify-content: center; gap: 0; margin-top: 20px; border: 4px solid #333; }
-        .square { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; }
-        .white { background: #f0d9b5; color: #000; }
-        .black { background: #b58863; color: #fff; }
+        body { background: #222; text-align: center; color: #fff; font-family: sans-serif; }
+        .board { display: grid; grid-template-columns: repeat(8, 45px); grid-template-rows: repeat(8, 45px); justify-content: center; margin: 20px auto; border: 5px solid #444; }
+        .sq { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-size: 28px; cursor: pointer; user-select: none; }
+        .w { background: #f0d9b5; color: #000; } .b { background: #b58863; color: #fff; }
+        .selected { background: #769656 !important; }
     </style>
 </head>
 <body>
-    <a href="games.html" style="color:#00ffcc;">← Back</a>
-    <h1>♟️ INTEL CHESS ARENA</h1>
-    <div class="board" id="b"></div>
+    <a href="games.html" style="color:#00ffcc; text-decoration:none;">← Back Dashboard</a>
+    <h2>♟️ REAL PLAYABLE CHESS BOARD</h2>
+    <div class="board" id="board"></div>
+    <p id="msg">Click a piece to select, then click an empty square to move!</p>
+
     <script>
-        let b = document.getElementById("b");
-        for(let r=0; r<8; r++) {
-            for(let c=0; c<8; c++) {
-                let color = (r + c) % 2 === 0 ? 'white' : 'black';
-                let piece = (r===1) ? '♟️' : (r===6) ? '♙' : '';
-                b.innerHTML += `<div class="square ${color}">${piece}</div>`;
+        const initial = [
+            ['♜','♞','♝','♛','♚','♝','♞','♜'], ['♟','♟','♟','♟','♟','♟','♟','♟'],
+            ['','','','','','','',''], ['','','','','','','',''],
+            ['','','','','','','',''], ['','','','','','','',''],
+            ['♙','♙','♙','♙','♙','♙','♙','♙'], ['♖','♘','♗','♕','♔','♗','♘','♖']
+        ];
+        let selected = null, boardEl = document.getElementById("board");
+        function draw() {
+            boardEl.innerHTML = "";
+            for(let r=0; r<8; r++) {
+                for(let c=0; c<8; c++) {
+                    let color = (r+c)%2===0 ? 'w' : 'b';
+                    let div = document.createElement("div");
+                    div.className = `sq ${color}`;
+                    div.innerText = initial[r][c];
+                    div.dataset.r = r; div.dataset.c = c;
+                    div.onclick = () => clickSquare(r, c);
+                    if(selected && selected.r === r && selected.c === c) div.classList.add("selected");
+                    boardEl.appendChild(div);
+                }
             }
         }
+        function clickSquare(r, c) {
+            if (selected) {
+                initial[r][c] = initial[selected.r][selected.c];
+                initial[selected.r][selected.c] = '';
+                selected = null; draw();
+            } else if (initial[r][c] !== '') {
+                selected = {r, c}; draw();
+            }
+        }
+        draw();
     </script>
 </body>
 </html>
