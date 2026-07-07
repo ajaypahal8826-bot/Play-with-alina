@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classic Rummy Pro</title>
+    <style>
+        body { background: #145a32; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
+        .rummy-container { background: rgba(0,0,0,0.4); max-width: 600px; margin: auto; padding: 20px; border-radius: 10px; border: 2px solid #27ae60; }
+        .deck-zone { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; }
+        .card { background: #fff; color: #000; width: 65px; height: 95px; border-radius: 6px; font-size: 22px; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <a href="games.html" style="color: #58d68d; text-decoration: none;">← Dashboard</a>
+    <h1>🃏 LIVE CLUB RUMMY</h1>
+    <div class="rummy-container">
+        <div class="deck-zone">
+            <div><p>Open Deck</p><div class="card" style="color:red;">7♦️</div></div>
+            <div><p>Closed Deck</p><div class="card" style="background:#2c3e50; color:#fff;" onclick="drawCard()">🎴</div></div>
+        </div>
+        <h3>Your Cards (Sequence Sorting)</h3>
+        <div style="display:flex; justify-content:center; gap:5px; flex-wrap:wrap;">
+            <div class="card">J♠️</div><div class="card">Q♠️</div><div class="card">K♠️</div>
+            <div class="card" style="color:red;">5♥️</div><div class="card" style="color:red;">6♥️</div>
+            <div class="card" style="color:red;">A♦️</div><div class="card" style="color:red;">2♦️</div>
+        </div>
+        <p id="log" style="color:#f1c40f; margin-top:20px;">Click Closed Deck to pick a card.</p>
+    </div>
+    <script>function drawCard() { document.getElementById("log").innerText = "Card Drawn! Choose a discard card."; }</script>
+</body>
+</html>
