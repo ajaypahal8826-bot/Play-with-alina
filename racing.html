@@ -3,26 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nitro Car Racing</title>
+    <title>Retro Highway Racer</title>
     <style>
-        body { background: #333; color: #fff; font-family: sans-serif; text-align: center; margin: 0; overflow: hidden; }
-        .road { width: 200px; height: 300px; background: #111; margin: auto; border-left: 5px dashed #fff; border-right: 5px dashed #fff; position: relative; }
-        .car { font-size: 32px; position: absolute; bottom: 20px; left: 80px; transition: 0.2s; }
+        body { background: #222; color: #fff; font-family: sans-serif; text-align: center; margin: 0; }
+        .game-container { position: relative; width: 300px; height: 400px; background: #333; margin: 20px auto; overflow: hidden; border: 4px solid #ff007f; }
+        .line { position: absolute; width: 6px; height: 50px; background: #fff; left: 147px; }
+        .player-car { position: absolute; bottom: 20px; left: 130px; font-size: 35px; width: 40px; transition: 0.1s; }
+        .enemy-car { position: absolute; top: -50px; left: 50px; font-size: 35px; }
+        .controls { margin-top: 15px; }
+        .btn { padding: 15px 30px; font-size: 18px; background: #ff007f; color: #fff; border: none; border-radius: 8px; margin: 5px; }
     </style>
 </head>
 <body>
-    <a href="games.html" style="color:#ff007f; display:block; margin:10px;">← Back</a>
-    <h1>🏎️ NITRO HIGHWAY RACING</h1>
-    <div class="road">
-        <div class="car" id="hero">🏎️</div>
+    <a href="games.html" style="color:#00ffcc; display:block; margin-top:10px;">← Exit</a>
+    <h2>🏎️ HIGHWAY DRIFT PRO</h2>
+    <p id="score-text">Score: 0</p>
+    
+    <div class="game-container">
+        <div class="line" style="top:0px;" id="l1"></div>
+        <div class="line" style="top:100px;" id="l2"></div>
+        <div class="line" style="top:200px;" id="l3"></div>
+        <div class="line" style="top:300px;" id="l4"></div>
+        <div class="enemy-car" id="enemy">🚘</div>
+        <div class="player-car" id="player">🏎️</div>
     </div>
-    <div style="margin-top:15px;">
-        <button style="padding:15px; font-size:18px;" onclick="move(-30)">⬅️ Left</button>
-        <button style="padding:15px; font-size:18px;" onclick="move(30)">Right ➡️</button>
+
+    <div class="controls">
+        <button class="btn" onclick="moveCar(-40)">⬅️ Left</button>
+        <button class="btn" onclick="moveCar(40)">Right ➡️</button>
     </div>
+
     <script>
-        let l = 80;
-        function move(d) { l += d; if(l<20)l=20; if(l>140)l=140; document.getElementById("hero").style.left = l + "px"; }
+        let pLeft = 130;
+        let eTop = -50;
+        let eLeft = 50;
+        let score = 0;
+        let active = true;
+
+        function moveCar(v) {
+            if(!active) return;
+            pLeft += v;
+            if(pLeft < 30) pLeft = 30;
+            if(pLeft > 230) pLeft = 230;
+            document.getElementById("player").style.left = pLeft + "px";
+        }
+
+        function gameLoop() {
+            if(!active) return;
+            eTop += 5;
+            if(eTop > 400) {
+                eTop = -50;
+                eLeft = Math.floor(Math.random() * 5) * 40 + 30;
+                document.getElementById("enemy").style.left = eLeft + "px";
+                score += 10;
+                document.getElementById("score-text").innerText = "Score: " + score;
+            }
+            document.getElementById("enemy").style.top = eTop + "px";
+
+            // Collision check syntax setup
+            if(eTop > 320 && eTop < 380 && Math.abs(pLeft - eLeft) < 30) {
+                active = false;
+                alert("💥 Crash! Game Over. Final Score: " + score);
+                location.reload();
+            }
+            requestAnimationFrame(gameLoop);
+        }
+        window.onload = () => { requestAnimationFrame(gameLoop); };
     </script>
 </body>
 </html>
