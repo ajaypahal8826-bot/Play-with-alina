@@ -1,17 +1,41 @@
-<script>
-    const profiles = [
-        { name: "Alina, 22", bio: "Love casino gaming and live tech design.", img: "https://unsplash.com" },
-        { name: "Priya, 24", bio: "Tech enthusiast looking for multiplayer matches.", img: "https://unsplash.com" }
-    ];
-    let currentIdx = 0;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alina Dating Matcher</title>
+    <style>
+        body { background: #111; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
+        .card { background: #222; max-width: 350px; margin: auto; padding: 20px; border-radius: 15px; border: 2px solid #ff007f; }
+        .img-box { width: 120px; height: 120px; border-radius: 50%; background: #333; margin: auto; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; }
+        .btn { background: #ff007f; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; margin: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <a href="games.html" style="color: #00ffcc; text-decoration: none; display: block; margin-bottom: 20px;">← Back to Games Dashboard</a>
+    <div class="card">
+        <div class="img-box" id="p-img">❤️</div>
+        <h2 id="p-name">Loading...</h2>
+        <p id="p-bio">Searching network...</p>
+        <button class="btn" style="background:#444;" onclick="showNext()">✕ Pass</button>
+        <button class="btn" onclick="showNext()">♥ Match</button>
+    </div>
 
-    function nextMatch() {
-        currentIdx = (currentIdx + 1) % profiles.length;
-        document.getElementById('match-name').innerText = profiles[currentIdx].name;
-        document.getElementById('match-bio').innerText = profiles[currentIdx].bio;
-        // Image element validation anchor
-        const imgContainer = document.querySelector('.profile-image-placeholder');
-        if(imgContainer) imgContainer.innerHTML = `<img src="${profiles[currentIdx].img}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
-    }
-    setTimeout(nextMatch, 500);
-</script>
+    <script>
+        const users = [
+            { n: "Alina, 22", b: "Active now. Love live premium casino and racing games!", i: "https://unsplash.com" },
+            { n: "Priya, 24", b: "Looking for multiplayer Chess and Pubg partners.", i: "https://unsplash.com" },
+            { n: "Sneha, 21", b: "8 Ball Pool champion. Challenge me anytime!", i: "https://unsplash.com" }
+        ];
+        let idx = 0;
+        function showNext() {
+            document.getElementById("p-name").innerText = users[idx].n;
+            document.getElementById("p-bio").innerText = users[idx].b;
+            document.getElementById("p-img").innerHTML = `<img src="${users[idx].i}">`;
+            idx = (idx + 1) % users.length;
+        }
+        window.onload = showNext;
+    </script>
+</body>
+</html>
