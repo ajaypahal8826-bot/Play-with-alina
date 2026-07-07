@@ -36,36 +36,36 @@
 
 <section class="hero">
     <h1>SUPREME GAMES ARENA</h1>
-    <p>Launch high-speed multi-networks instantly by placing entry chips</p>
+    <p>Place entry tokens to launch high-speed games instantly</p>
 </section>
 
 <section class="casino-grid">
     <div class="casino-card">
         <div style="font-size: 36px; color: #ffcc00;"><i class="fa-solid fa-car"></i></div>
         <h2>🏎️ Vegas Neon Racing</h2>
-        <p>High speed Retro Car simulation game loop. Dodge traffic and secure metrics.</p>
-        <button class="btn-bet" onclick="launchGame('https://brossarddesign.com', 0.20)">Play Game</button>
+        <p>High speed Retro Car simulation game loop. Dodge traffic and win.</p>
+        <button class="btn-bet" id="race-btn">Play Game</button>
     </div>
 
     <div class="casino-card">
         <div style="font-size: 36px; color: #ffcc00;"><i class="fa-solid fa-circle-dot"></i></div>
         <h2>🎱 Pro 8-Ball Pool</h2>
         <p>Premium web cue sports simulator. Swipe angles to clear the table tracks.</p>
-        <button class="btn-bet" onclick="launchGame('https://9ball-pool.com', 0.15)">Play Game</button>
+        <button class="btn-bet" id="pool-btn">Play Game</button>
     </div>
 
     <div class="casino-card">
         <div style="font-size: 36px; color: #ffcc00;"><i class="fa-solid fa-hand-fist"></i></div>
         <h2>🥷 Street Fighting Combo</h2>
-        <p>Retro arcade face-to-face combat template. Smash controls to clear tracks.</p>
-        <button class="btn-bet" onclick="launchGame('https://retrogames.cc', 0.25)">Play Game</button>
+        <p>Retro arcade face-to-face combat template. Smash controls to win.</p>
+        <button class="btn-bet" id="fight-btn">Play Game</button>
     </div>
 
     <div class="casino-card">
         <div style="font-size: 36px; color: #ffcc00;"><i class="fa-solid fa-gun"></i></div>
         <h2>🔫 PUBG Battleground Web</h2>
         <p>Voxiom Multiplayer FPS zone shooter loop module configuration.</p>
-        <button class="btn-bet" onclick="launchGame('https://voxiom.io', 0.30)">Play Game</button>
+        <button class="btn-bet" id="pubg-btn">Play Game</button>
     </div>
 
     <div class="casino-card">
@@ -91,16 +91,22 @@
     const firebaseConfig = { apiKey: "AIzaSyCjZk8A8tJvUf4YmIkAy-g3_5YqhvW-3Bc", authDomain: "://firebaseapp.com", projectId: "playwithalina-d7bb3", storageBucket: "playwithalina-d7bb3.firebasestorage.app", messagingSenderId: "18244211359", appId: "1:18244211359:web:d10be09d3e9fbb184c88aa" };
     const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app);
 
-    window.launchGame = async function(url, fee) {
-        const user = auth.currentUser; if(!user) return alert("Please Login via login.html first!");
-        const userRef = doc(db, 'users', user.uid); const docSnap = await getDoc(userRef);
+    async function launchGame(url, fee) {
+        const user = auth.currentUser; 
+        if(!user) return alert("⚠️ Pehle account login karein! login.html open kijiye.");
+        
+        const userRef = doc(db, 'users', user.uid); 
+        const docSnap = await getDoc(userRef);
         const currentBalance = docSnap.data().walletBalance || 0;
-        if(currentBalance < fee) return alert("❌ Insufficient Funds! Add cash to continue.");
+        
+        if(currentBalance < fee) return alert("❌ Wallet mein paise nahi hain! Add Funds par click karein.");
 
-        if(confirm(`Deduct $${fee} and start game session?`)) {
-            await updateDoc(userRef, { walletBalance: currentBalance - fee });
-            await addDoc(collection(db, 'transactions'), { userId: user.uid, type: 'Premium Game Play', amount: fee, status: 'success', timestamp: serverTimestamp() });
-            window.open(url, '_blank');
+        if(confirm(`Kya aap $${fee} entry fee dekar game chalana chahte hain?`)) {
+            try {
+                await updateDoc(userRef, { walletBalance: currentBalance - fee });
+                await addDoc(collection(db, 'transactions'), { userId: user.uid, type: 'Premium Game Play', amount: fee, status: 'success', timestamp: serverTimestamp() });
+                window.open(url, '_blank');
+            } catch(e) { alert("Error: " + e.message); }
         }
     }
 
@@ -113,6 +119,12 @@
             });
         }
     });
+
+    // Event Listeners instead of risky inline onclicks
+    document.getElementById('race-btn').addEventListener('click', () => launchGame('https://brossarddesign.com', 0.20));
+    document.getElementById('pool-btn').addEventListener('click', () => launchGame('https://9ball-pool.com', 0.15));
+    document.getElementById('fight-btn').addEventListener('click', () => launchGame('https://retrogames.cc', 0.25));
+    document.getElementById('pubg-btn').addEventListener('click', () => launchGame('https://voxiom.io', 0.30));
 </script>
 </body>
 </html>
