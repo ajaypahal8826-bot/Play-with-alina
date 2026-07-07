@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Alina Vegas Pro - Live Premium Casino</title>
+<!-- FontAwesome for icons -->
+<link rel="stylesheet" href="https://cloudflare.com">
 <link rel="stylesheet" href="style.css">
 <style>
     body {
@@ -36,6 +38,7 @@
         font-size: 16px;
         font-weight: bold;
         text-transform: uppercase;
+        transition: all 0.3s ease;
     }
     nav a:hover { color: #ff0077; text-shadow: 0 0 15px #ff0077; }
     .deposit-blink {
@@ -55,11 +58,41 @@
         border: 1px solid #00ff66;
     }
     .hero { text-align: center; padding: 60px 20px; background-color: rgba(17, 2, 31, 0.85); }
-    .hero h1 { font-size: 55px; color: #ff0077; text-shadow: 0 0 20px #ff0077; }
+    .hero h1 { font-size: 55px; color: #ff0077; text-shadow: 0 0 20px #ff0077; margin-bottom: 10px; }
+    
+    /* Grid Design */
     .casino-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1200px; margin: 50px auto; padding: 0 20px; }
-    .casino-card { background: #110221; border: 2px solid #ff0077; border-radius: 15px; padding: 20px; text-align: center; }
-    .casino-card h2 { color: #ffcc00; }
-    .btn-bet { background: linear-gradient(90deg, #ff0077, #ff5500); color: #fff; padding: 12px 30px; text-decoration: none; font-weight: bold; border-radius: 25px; display: inline-block; }
+    
+    .casino-card { 
+        background: #110221; 
+        border: 2px solid #ff0077; 
+        border-radius: 15px; 
+        padding: 25px 20px; 
+        text-align: center; 
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+    .casino-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 20px rgba(255, 0, 119, 0.4);
+    }
+    .casino-card h2 { color: #ffcc00; font-size: 22px; margin-top: 10px; }
+    .casino-card p { color: #ccc; font-size: 14px; line-height: 1.5; margin: 15px 0; }
+    .btn-bet { background: linear-gradient(90deg, #ff0077, #ff5500); color: #fff; padding: 12px 30px; text-decoration: none; font-weight: bold; border-radius: 25px; display: inline-block; border: none; cursor: pointer; width: 80%; transition: opacity 0.2s; }
+    .btn-bet:hover { opacity: 0.9; }
+
+    /* Premium Dating Pool Card Vibe */
+    .dating-card {
+        background: linear-gradient(145deg, #1f011a, #0b001a);
+        border: 2px dashed #00ffff;
+        box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+    }
+    .dating-card:hover {
+        border-style: solid;
+        box-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
+    }
+    .dating-card h2 { color: #00ffff !important; text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); }
+    .btn-dating { background: linear-gradient(90deg, #00ffff, #b000ff) !important; color: #fff; }
 </style>
 </head>
 <body>
@@ -81,22 +114,37 @@
 </section>
 
 <section class="casino-grid">
+    <!-- Premium Dating Pool Feature Card -->
+    <div class="casino-card dating-card">
+        <div style="font-size: 40px; color: #00ffff;"><i class="fa-solid fa-heart-pulse"></i></div>
+        <h2>💞 Alina's Dating Pool</h2>
+        <p>Meet hot players online! Add yourself to the global matchmaking list and find your match.</p>
+        <button id="join-pool-btn" class="btn-bet btn-dating">Join Pool (Free)</button>
+    </div>
+
     <div class="casino-card">
+        <div style="font-size: 40px; color: #ffcc00;"><i class="fa-solid fa-crown"></i></div>
         <h2>👑 Live Teen Patti</h2>
         <p>Classic Indian 3-Card Poker. Play with real players globally!</p>
         <a href="games.html" class="btn-bet">Bet Now (Fee: $0.20)</a>
     </div>
+    
     <div class="casino-card">
+        <div style="font-size: 40px; color: #ffcc00;"><i class="fa-solid fa-layer-group"></i></div>
         <h2>🃏 Pro Rummy 24x7</h2>
         <p>Fast-paced strategic card melding. Wipe out the dealer's chips.</p>
         <a href="games.html" class="btn-bet">Join Table (Fee: $0.20)</a>
     </div>
+    
     <div class="casino-card">
+        <div style="font-size: 40px; color: #ffcc00;"><i class="fa-solid fa-circle-dot"></i></div>
         <h2>🔴 Vegas Roulette Wheel</h2>
         <p>Spin the lucky red & black wheel. Predict number splits.</p>
         <a href="games.html" class="btn-bet">Spin & Win (Fee: $0.20)</a>
     </div>
+    
     <div class="casino-card">
+        <div style="font-size: 40px; color: #ffcc00;"><i class="fa-solid fa-staff-snake"></i></div>
         <h2>🐍 Snake Arena Pro</h2>
         <p>Your custom skill game. Hit a score of 15 and multiply your tokens!</p>
         <a href="snake.html" class="btn-bet">Start Match</a>
@@ -104,13 +152,14 @@
 </section>
 
 <script type="module">
+    // Fixed relative static broken URLs to valid Firestore modules
     import { initializeApp } from "https://gstatic.com";
-    import { getFirestore, doc, onSnapshot } from "https://gstatic.com";
+    import { getFirestore, doc, onSnapshot, updateDoc } from "https://gstatic.com";
     import { getAuth, onAuthStateChanged } from "https://gstatic.com";
 
     const firebaseConfig = {
         apiKey: "AIzaSyCjZk8A8tJvUf4YmIkAy-g3_5YqhvW-3Bc",
-        authDomain: "://firebaseapp.com",
+        authDomain: "playwithalina-d7bb3.firebaseapp.com",
         projectId: "playwithalina-d7bb3",
         storageBucket: "playwithalina-d7bb3.firebasestorage.app",
         messagingSenderId: "18244211359",
@@ -121,14 +170,57 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
 
+    let currentUserId = null;
+
     onAuthStateChanged(auth, user => {
         if (user) {
+            currentUserId = user.uid;
+            
+            // Listen to User Wallet and Dating Pool status
             onSnapshot(doc(db, 'users', user.uid), docSnap => {
                 if (docSnap.exists()) {
-                    let balance = docSnap.data().walletBalance || 0;
+                    const data = docSnap.data();
+                    
+                    // Update Balance
+                    let balance = data.walletBalance || 0;
                     document.getElementById('nav-wallet-display').innerText = '$' + balance.toFixed(2);
+                    
+                    // Update Dating Button State dynamically
+                    const poolBtn = document.getElementById('join-pool-btn');
+                    if(data.isInDatingPool === true) {
+                        poolBtn.innerText = "Leave Dating Pool";
+                        poolBtn.style.background = "linear-gradient(90deg, #ff0055, #7a00ff)";
+                    } else {
+                        poolBtn.innerText = "Join Pool (Free)";
+                        poolBtn.style.background = "linear-gradient(90deg, #00ffff, #b000ff)";
+                    }
                 }
             });
+        } else {
+            console.log("No user signed in.");
+        }
+    });
+
+    // Handle Join/Leave Dating Pool action
+    document.getElementById('join-pool-btn').addEventListener('click', async () => {
+        if (!currentUserId) {
+            alert("Please log in first to join the dating pool!");
+            return;
+        }
+
+        const btnText = document.getElementById('join-pool-btn').innerText;
+        const userRef = doc(db, 'users', currentUserId);
+
+        try {
+            if (btnText.includes("Join")) {
+                await updateDoc(userRef, { isInDatingPool: true });
+                alert("💖 Awesome! You are now live in Alina's Dating Pool.");
+            } else {
+                await updateDoc(userRef, { isInDatingPool: false });
+                alert("💔 You have left the Dating Pool successfully.");
+            }
+        } catch (error) {
+            alert("Error updating profile: " + error.message);
         }
     });
 </script>
