@@ -1,78 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel - Play with Alina</title>
-<link rel="stylesheet" href="style.css">
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Control Room - Alina Vegas Pro</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <link rel="stylesheet" href="https://cloudflare.com">
+    
+    <style>
+        :root {
+            --bg-color: #08080c;
+            --panel-bg: #11111a;
+            --primary: #ff0055;
+            --primary-glow: rgba(255, 0, 85, 0.5);
+            --secondary: #00f0ff;
+            --success: #00ff66;
+            --warning: #ffaa00;
+            --text-main: #ffffff;
+            --text-muted: #8a8a9e;
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: var(--bg-color); 
+            color: var(--text-main); 
+            font-family: 'Rajdhani', sans-serif; 
+            padding: 30px 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .dashboard-container { 
+            max-width: 1100px; 
+            margin: 0 auto; 
+        }
+
+        /* Unified Premium Navbar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #1a1a26;
+            padding-bottom: 15px;
+        }
+
+        h1 { 
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-main); 
+            font-size: 24px;
+            text-shadow: 0 0 15px var(--primary-glow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h1 span { color: var(--primary); }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        nav a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary-glow); }
+
+        .welcome-msg {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        /* Stats Grid Layout */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--panel-bg);
+            border: 1px solid #1e1e2f;
+            padding: 25px 20px;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover { transform: translateY(-3px); }
+        
+        .stat-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary);
+        }
+        .stat-card.blue-bar::before { background: var(--secondary); }
+        .stat-card.green-bar::before { background: var(--success); }
+        .stat-card.yellow-bar::before { background: var(--warning); }
+
+        .stat-card h3 { font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; font-family: 'Orbitron', sans-serif; }
+        .stat-card .value { font-size: 32px; font-family: 'Orbitron', sans-serif; font-weight: bold; color: var(--text-main); }
+        .stat-card .icon { position: absolute; right: 20px; bottom: 20px; font-size: 36px; color: rgba(255,255,255,0.03); }
+
+        /* Action Panel Links */
+        .action-box {
+            background: var(--panel-bg);
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #1e1e2f;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .btn-link {
+            display: inline-block;
+            background: linear-gradient(90deg, #ff0077, #ff5500);
+            color: #fff;
+            padding: 14px 35px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(255,0,119,0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 25px rgba(255,0,119,0.5);
+        }
+    </style>
+</head>
 <body>
 
-<header>
-<div class="logo">🛠 Admin Panel</div>
+<div class="dashboard-container">
+    <header>
+        <h1><span>ALINA VEGAS</span> CONTROL ROOM</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="Deposit.html">Add Funds</a>
+            <a href="Adminaprooval.html">Approvals</a>
+        </nav>
+    </header>
 
-<nav>
-<a href="index.html">Home</a>
-<a href="wallet.html">Wallet</a>
-<a href="games.html">Games</a>
-</nav>
+    <div class="welcome-msg">👑 Welcome Back, Chief Owner Only Portal</div>
 
-</header>
+    <!-- Live Counters Grid -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Total Registered Users</h3>
+            <div class="value" id="users-count">Loading...</div>
+            <div class="icon"><i class="fa-solid fa-users"></i></div>
+        </div>
+        
+        <div class="stat-card blue-bar">
+            <h3>Total Wallets Managed</h3>
+            <div class="value" id="wallets-count">Loading...</div>
+            <div class="icon"><i class="fa-solid fa-wallet"></i></div>
+        </div>
 
-<section class="hero">
+        <div class="stat-card yellow-bar">
+            <h3>Pending Deposits</h3>
+            <div class="value" id="pending-deposits-count">Loading...</div>
+            <div class="icon"><i class="fa-solid fa-hourglass-half"></i></div>
+        </div>
 
-<h1>Play with Alina Admin</h1>
+        <div class="stat-card green-bar">
+            <h3>Withdraw Requests</h3>
+            <div class="value" style="color: var(--text-muted); font-size: 20px; margin-top: 10px;">Coming Soon</div>
+            <div class="icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+        </div>
+    </div>
 
-<p>Welcome Admin</p>
-
-<div class="game-card">
-<h2>Total Users</h2>
-<p id="users">Loading...</p>
+    <!-- Quick Navigation to Approval Sheet -->
+    <div class="action-box">
+        <h2 style="font-family: 'Orbitron'; font-size: 20px; margin-bottom: 10px; color: var(--secondary);">Manage Transactions</h2>
+        <p style="color: var(--text-muted); font-size: 15px;">Click below to open the real-time submission dashboard to clear pending player funds.</p>
+        <a href="Adminaprooval.html" class="btn-link"><i class="fa-solid fa-shield-halved"></i> Go to Approval Panel</a>
+    </div>
 </div>
-
-<div class="game-card">
-<h2>Total Wallets</h2>
-<p>Loading...</p>
-</div>
-
-<div class="game-card">
-<h2>Deposit Requests</h2>
-<p>Coming Soon</p>
-</div>
-
-<div class="game-card">
-<h2>Withdraw Requests</h2>
-<p>Coming Soon</p>
-</div>
-
-</section>
 
 <script type="module">
+    import { initializeApp } from "https://gstatic.com";
+    import { getFirestore, collection, onSnapshot, query, where } from "https://gstatic.com";
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+    const firebaseConfig = {
+        apiKey: "AIzaSyCjZk8A8tJvUf4YmIkAy-g3_5YqhvW-3Bc",
+        authDomain: "playwithalina-d7bb3.firebaseapp.com",
+        projectId: "playwithalina-d7bb3",
+        storageBucket: "playwithalina-d7bb3.firebasestorage.app",
+        messagingSenderId: "18244211359",
+        appId: "1:18244211359:web:d10be09d3e9fbb184c88aa"
+    };
 
-const firebaseConfig = {
-apiKey: "AIzaSyCjZk8A8tJvUf4YmIkAy-g3_5YqhvW-3Bc",
-authDomain: "playwithalina-d7bb3.firebaseapp.com",
-projectId: "playwithalina-d7bb3",
-storageBucket: "playwithalina-d7bb3.firebasestorage.app",
-messagingSenderId: "18244211359",
-appId: "1:18244211359:web:d10be09d3e9fbb184c88aa"
-};
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+    // 1. Live real-time tracker for Registered Users & Wallets
+    onSnapshot(collection(db, "users"), (snapshot) => {
+        document.getElementById("users-count").innerText = snapshot.size;
+        document.getElementById("wallets-count").innerText = snapshot.size; // 1-to-1 Mapping per account profile
+    }, (error) => {
+        document.getElementById("users-count").innerText = "Error";
+        document.getElementById("wallets-count").innerText = "Error";
+    });
 
-async function loadUsers(){
-const snap = await getDocs(collection(db,"users"));
-document.getElementById("users").innerHTML = snap.size;
-}
-
-loadUsers();
-
+    // 2. Live sync counter for pending requests sheet metrics
+    const depositQuery = query(collection(db, 'depositRequests'), where('status', '==', 'pending'));
+    onSnapshot(depositQuery, (snapshot) => {
+        document.getElementById("pending-deposits-count").innerText = snapshot.size;
+    }, (error) => {
+        document.getElementById("pending-deposits-count").innerText = "0";
+    });
 </script>
-
 </body>
 </html>
