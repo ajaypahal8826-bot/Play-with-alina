@@ -41,35 +41,31 @@
 </section>
 
 <section class="casino-grid">
-    <!-- Active Game 1 -->
     <div class="casino-card">
         <div style="font-size: 36px; color: #ffcc00;"><i class="fa-solid fa-car"></i></div>
         <h2>🏎️ Vegas Neon Racing</h2>
-        <p>High speed HTML5 car simulation network game loop. Dodge traffic and secure metrics.</p>
+        <p>High speed Retro Car simulation game loop. Dodge traffic and secure metrics.</p>
         <button class="btn-bet" onclick="launchGame('https://brossarddesign.com', 0.20)">Play (Fee: $0.20)</button>
     </div>
 
-    <!-- Active Game 2 -->
     <div class="casino-card">
         <div style="font-size: 36px; color: #ffcc00;"><i class="fa-solid fa-circle-dot"></i></div>
         <h2>🎱 Pro 8-Ball Pool</h2>
-        <p>Premium open-source cue sports simulator. Swipe angles to clear the table tracks.</p>
+        <p>Premium web cue sports simulator. Swipe angles to clear the table tracks.</p>
         <button class="btn-bet" onclick="launchGame('https://9ball-pool.com', 0.15)">Play (Fee: $0.15)</button>
     </div>
 
-    <!-- Active Game 3 -->
     <div class="casino-card">
         <div style="font-size: 36px; color: #ffcc00;"><i class="fa-solid fa-hand-fist"></i></div>
         <h2>🥷 Street Fighting Combo</h2>
-        <p>Retro arcade face-to-face combat mini framework. Smash keys to trigger specials.</p>
+        <p>Retro arcade face-to-face combat template. Smash controls to clear tracks.</p>
         <button class="btn-bet" onclick="launchGame('https://retrogames.cc', 0.25)">Play (Fee: $0.25)</button>
     </div>
 
-    <!-- Active Game 4 -->
     <div class="casino-card">
         <div style="font-size: 36px; color: #ffcc00;"><i class="fa-solid fa-gun"></i></div>
         <h2>🔫 PUBG Battleground Web</h2>
-        <p>Mini multiplayer shooter game loop simulation. Drop zones and eliminate enemies.</p>
+        <p>Voxiom Multiplayer FPS zone shooter loop module configuration.</p>
         <button class="btn-bet" onclick="launchGame('https://voxiom.io', 0.30)">Play (Fee: $0.30)</button>
     </div>
 
@@ -97,7 +93,7 @@
     const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app);
 
     window.launchGame = async function(url, fee) {
-        const user = auth.currentUser; if(!user) return alert("Please Login First!");
+        const user = auth.currentUser; if(!user) return alert("Please Login via login.html first!");
         const userRef = doc(db, 'users', user.uid); const docSnap = await getDoc(userRef);
         const currentBalance = docSnap.data().walletBalance || 0;
         if(currentBalance < fee) return alert("❌ Insufficient Funds! Add cash to continue.");
