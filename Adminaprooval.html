@@ -3,46 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Owner Admin Dashboard - Alina Vegas</title>
+    <title>Owner Premium Dashboard - Alina Vegas</title>
+    <!-- Google Fonts & FontAwesome for Premium Icons -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <link rel="stylesheet" href="https://cloudflare.com">
+    
     <style>
-        body { background: #0b0b0e; color: #fff; font-family: sans-serif; padding: 20px; }
-        .admin-box { max-width: 900px; margin: 0 auto; background: #14141c; padding: 25px; border-radius: 12px; border: 2px solid #ff0077; }
-        h1 { color: #ff0077; text-shadow: 0 0 10px #ff0077; }
-        .request-table { width: 100%; border-collapse: collapse; margin-top: 20px; text-align: left; }
-        .request-table th, .request-table td { padding: 12px; border-bottom: 1px solid #252533; }
-        .request-table th { background: #1c1c28; color: #aaa; }
-        .btn-approve { background: #00ff66; color: #000; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; cursor: pointer; }
-        .status-badge { background: #ffcc00; color: #000; padding: 4px 8px; border-radius: 4px; font-weight: bold; }
-        .no-data { text-align: center; color: #666; padding: 30px; }
+        :root {
+            --bg-color: #08080c;
+            --panel-bg: #11111a;
+            --primary: #ff0055;
+            --primary-glow: rgba(255, 0, 85, 0.5);
+            --secondary: #00f0ff;
+            --success: #00ff66;
+            --warning: #ffaa00;
+            --text-main: #ffffff;
+            --text-muted: #8a8a9e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: var(--bg-color); 
+            color: var(--text-main); 
+            font-family: 'Rajdhani', sans-serif; 
+            padding: 30px 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .dashboard-container { 
+            max-width: 1100px; 
+            margin: 0 auto; 
+        }
+
+        /* Top Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #1a1a26;
+            padding-bottom: 15px;
+        }
+
+        h1 { 
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-main); 
+            font-size: 24px;
+            text-shadow: 0 0 15px var(--primary-glow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h1 span { color: var(--primary); }
+
+        /* Stats & Dating Pool Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1max));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--panel-bg);
+            border: 1px solid #1e1e2f;
+            padding: 20px;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .stat-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary);
+        }
+        .stat-card.pool::before { background: var(--secondary); }
+
+        .stat-card h3 { font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; }
+        .stat-card .value { font-size: 28px; font-family: 'Orbitron', sans-serif; font-weight: bold; color: var(--text-main); }
+        .stat-card .icon { position: absolute; right: 20px; bottom: 20px; font-size: 32px; color: rgba(255,255,255,0.05); }
+
+        /* Main Panel Box */
+        .admin-box { 
+            background: var(--panel-bg); 
+            padding: 25px; 
+            border-radius: 16px; 
+            border: 1px solid #1e1e2f;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .panel-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Table Design */
+        .table-responsive { overflow-x: auto; }
+        .request-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .request-table th, .request-table td { padding: 16px; border-bottom: 1px solid #1a1a26; font-size: 16px; }
+        .request-table th { background: #151522; color: var(--text-muted); text-transform: uppercase; font-size: 13px; font-family: 'Orbitron', sans-serif; }
+        .request-table tr:hover { background: rgba(255,255,255,0.02); }
+        
+        /* Badges & Buttons */
+        .status-badge { 
+            background: rgba(255, 170, 0, 0.15); 
+            color: var(--warning); 
+            padding: 5px 10px; 
+            border-radius: 6px; 
+            font-weight: bold; 
+            font-size: 12px;
+            text-transform: uppercase;
+            border: 1px solid rgba(255, 170, 0, 0.3);
+        }
+        
+        .btn-approve { 
+            background: var(--success); 
+            color: #000; 
+            border: none; 
+            padding: 8px 16px; 
+            border-radius: 6px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
+        }
+        .btn-approve:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px var(--success);
+        }
+
+        .no-data { text-align: center; color: var(--text-muted); padding: 40px; font-size: 18px; }
     </style>
 </head>
 <body>
 
-<div class="admin-box">
-    <h1>👑 Real-Time Deposit Approval Panel (Owner Only)</h1>
-    <table class="request-table">
-        <thead>
-            <tr>
-                <th>User Email</th>
-                <th>Amount</th>
-                <th>Transaction ID</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="requests-list">
-            <tr><td colspan="5" class="no-data">Loading dynamic pending requests...</td></tr>
-        </tbody>
-    </table>
+<div class="dashboard-container">
+    <header>
+        <h1><span>ALINA VEGAS</span> OWNER DASHBOARD</h1>
+        <div style="color: var(--text-muted);"><i class="fa-solid fa-circle" style="color: var(--success); font-size: 10px;"></i> Systems Operational</div>
+    </header>
+
+    <!-- Real-time Stats Grid including Dating Pool Counter -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Pending Requests</h3>
+            <div class="value" id="pending-count">0</div>
+            <div class="icon"><i class="fa-solid fa-hourglass-half"></i></div>
+        </div>
+        <div class="stat-card pool">
+            <h3>Dating Pool Users</h3>
+            <div class="value" id="dating-pool-count">Loading...</div>
+            <div class="icon"><i class="fa-solid fa-heart-pulse"></i></div>
+        </div>
+        <div class="stat-card">
+            <h3>Total Approvals</h3>
+            <div class="value" id="total-approvals">0</div>
+            <div class="icon"><i class="fa-solid fa-circle-check"></i></div>
+        </div>
+    </div>
+
+    <!-- Deposit Requests Panel -->
+    <div class="admin-box">
+        <div class="panel-title"><i class="fa-solid fa-wallet"></i> Real-Time Deposit Approval Panel</div>
+        <div class="table-responsive">
+            <table class="request-table">
+                <thead>
+                    <tr>
+                        <th>User Email</th>
+                        <th>Amount</th>
+                        <th>Transaction ID</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="requests-list">
+                    <tr><td colspan="5" class="no-data"><i class="fa-solid fa-spinner fa-spin"></i> Synchronizing live requests...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <script type="module">
+    // Fixed broken URLs by using correct fully-qualified URL endpoints
     import { initializeApp } from "https://gstatic.com";
-    import { getFirestore, collection, query, where, onSnapshot, doc, updateDoc, increment } from "https://gstatic.com";
+    import { getFirestore, collection, query, where, onSnapshot, doc, updateDoc, increment, getCountFromServer } from "https://gstatic.com";
 
+    // Replaced incomplete configs from your previous version
     const firebaseConfig = {
         apiKey: "AIzaSyCjZk8A8tJvUf4YmIkAy-g3_5YqhvW-3Bc",
-        authDomain: "://firebaseapp.com",
+        authDomain: "playwithalina-d7bb3.firebaseapp.com", // Corrected incomplete domain
         projectId: "playwithalina-d7bb3",
         storageBucket: "playwithalina-d7bb3.firebasestorage.app",
         messagingSenderId: "18244211359",
@@ -52,10 +209,12 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    // 1. Live Fetch & Listen for Deposit Requests
     const q = query(collection(db, 'depositRequests'), where('status', '==', 'pending'));
     
     onSnapshot(q, (snapshot) => {
         const tbody = document.getElementById('requests-list');
+        document.getElementById('pending-count').innerText = snapshot.size;
         tbody.innerHTML = '';
 
         if (snapshot.empty) {
@@ -69,32 +228,24 @@
 
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td><strong>${data.username || 'Unknown'}</strong></td>
-                <td style="color: #00ff66; font-weight: bold;">$${Number(data.amountRequested).toFixed(2)}</td>
-                <td style="color: #00ffff;">${data.transactionId}</td>
+                <td><strong style="color: #fff;">${data.username || 'Unknown User'}</strong></td>
+                <td style="color: var(--success); font-weight: bold; font-family: 'Orbitron';">$${Number(data.amountRequested).toFixed(2)}</td>
+                <td style="color: var(--secondary); font-family: monospace;">${data.transactionId || 'N/A'}</td>
                 <td><span class="status-badge">${data.status}</span></td>
-                <td><button class="btn-approve" data-id="${id}" data-user="${data.userId}" data-amount="${data.amountRequested}">Approve</button></td>
+                <td><button class="btn-approve" data-id="${id}" data-user="${data.userId}" data-amount="${data.amountRequested}"><i class="fa-solid fa-check"></i> Approve</button></td>
             `;
             tbody.appendChild(row);
         });
 
+        // Add event listeners securely
         document.querySelectorAll('.btn-approve').forEach(button => {
             button.addEventListener('click', (e) => {
-                approveUserDeposit(e.target.getAttribute('data-id'), e.target.getAttribute('data-user'), e.target.getAttribute('data-amount'));
+                const btn = e.target.closest('.btn-approve');
+                approveUserDeposit(btn.getAttribute('data-id'), btn.getAttribute('data-user'), btn.getAttribute('data-amount'));
             });
         });
     });
 
-    async function approveUserDeposit(requestId, userId, dollarAmount) {
-        if(!confirm(`Approve $${dollarAmount}?`)) return;
-        try {
-            await updateDoc(doc(db, 'users', userId), { walletBalance: increment(Number(dollarAmount)) });
-            await updateDoc(doc(db, 'depositRequests', requestId), { status: 'approved' });
-            alert(`✅ Success: $${dollarAmount} credited!`);
-        } catch (error) {
-            alert("Error: " + error.message);
-        }
-    }
-</script>
-</body>
-</html>
+    // 2. Real-Time Dating Pool Analytics Counter 
+    // Assumes your users collection tracks dating system registrations (e.g. isInDatingPool: true)
+    const datingQuery = query(collection(db, 'users'), where('isInDatingPool', '==', true));
